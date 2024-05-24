@@ -16,5 +16,6 @@
   },
   "prisma": {
   "seed": "bun prisma/seed.ts"
-  }
+  },
+  "main": "src/server.ts"
 }
