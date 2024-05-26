@@ -3,6 +3,13 @@ import { db } from "./db";
 
 const router = Router();
 
+/*
+GET     /tasks/             Get all tasks
+GET     /tasks/:id          Get one task (enter task id)
+POST    /tasks/             Add one task
+DELETE  /tasks/:id          Delete one task (enter task id)
+*/
+
 router.get("/", async (req, res) => {
   try {
     const tasks = await db.task.findMany({});
@@ -22,7 +29,7 @@ router.get("/:id", async (req, res) => {
     res.status(200).json(task);
   } catch (e: any) {
     if (e.name === "NotFoundError") {
-      return res.status(404).json({ message: "Not found." });
+      return res.status(404).json({ message: "Task not found. :(" });
     }
     res.status(500).json({ error: "Internal error" });
   }
