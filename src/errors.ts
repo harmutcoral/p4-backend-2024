@@ -28,7 +28,7 @@ export const defaultErrorHandler: ErrorRequestHandler = (err, req, res, next) =>
       return send(res).notFound();
 
     case "PrismaClientKnownRequestError":
-      return send(res).badRequest("Element to update not found");
+      return send(res).badRequest("Element not found");
 
     case "ZodError":
       return send(res).badRequest(zodErrorMessage(err));

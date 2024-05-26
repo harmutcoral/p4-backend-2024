@@ -1,64 +1,61 @@
 import { Router } from "express";
 import { db } from "./db";
+import { z } from "zod";
+import { catchErrors } from "./errors";
+import { send } from "./response";
+import { defaultErrorHandler } from "./errors";
 
 const router = Router();
 
-/*
-GET     /tasks/             Get all tasks
-GET     /tasks/:id          Get one task (enter task id)
-POST    /tasks/             Add one task
-DELETE  /tasks/:id          Delete one task (enter task id)
-*/
+const taskBodySchema = z.object({
+  title: z.string().min(5).max(200),
+  content: z.string().min(10).max(1000),
+  status: z.string().optional(),
+  userId: z.coerce.number(),
+});
 
-router.get("/", async (req, res) => {
-  try {
+//Get all tasks
+router.get(
+  "/",
+  catchErrors(async (_, res) => {
     const tasks = await db.task.findMany({});
-    res.status(200).json(tasks);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Internal error" });
-  }
-});
+    send(res).ok(tasks);
+  })
+);
 
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const task = await db.task.findUniqueOrThrow({
-      where: { id: Number(id) },
-    });
-    res.status(200).json(task);
-  } catch (e: any) {
-    if (e.name === "NotFoundError") {
-      return res.status(404).json({ message: "Task not found." });
+//Get tasks by id
+router.get(
+  "/:id",
+  catchErrors(async (req, res) => {
+    const taskId = parseInt(req.params.id);
+    const task = await db.task.findUnique({ where: { id: taskId } });
+    if (!task) {
+      send(res).notFound();
+      return;
     }
-    res.status(500).json({ error: "Internal error" });
-  }
-});
+    send(res).ok(task);
+  })
+);
 
-router.post("/", async (req, res) => {
-  try {
-    const { title, content, status, userId } = req.body;
-    const task = await db.task.create({
-      data: { title, content, status, userId },
-    });
-    res.status(201).json(task);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Couldn't create task." });
-  }
-});
+//Create task
+router.post(
+  "/",
+  catchErrors(async (req, res) => {
+    const data = taskBodySchema.parse(req.body);
+    const task = await db.task.create({ data });
+    send(res).createdOk(task);
+  })
+);
 
-router.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    await db.task.delete({
-      where: { id: Number(id) },
-    });
-    res.status(204).end();
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Couldn't delete task." });
-  }
-});
+//Delete task
+router.delete(
+  "/:id",
+  catchErrors(async (req, res) => {
+    const taskId = parseInt(req.params.id);
+    await db.task.delete({ where: { id: taskId } });
+  })
+);
+
+router.use(defaultErrorHandler);
 
 export default router;
