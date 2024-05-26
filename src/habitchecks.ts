@@ -10,9 +10,7 @@ const router = Router();
 const idParamsSchema = z.object({ id: z.coerce.number() });
 
 const habitCheckBodySchema = z.object({
-  habit: z.string().min(3).max(50),
   status: z.string().max(50),
-  userId: z.coerce.number(),
 });
 
 // Get all habit checks
@@ -29,7 +27,6 @@ router.get(
   "/:id",
   catchErrors(async (req, res) => {
     const { id } = idParamsSchema.parse(req.params);
-
     const habitCheck = await db.habitCheck.findUnique({ where: { id } });
 
     if (!habitCheck) {
@@ -51,7 +48,6 @@ router.put(
       where: { id },
       data: { status },
     });
-
     send(res).ok(updatedHabitCheck); 
   })
 );
@@ -66,7 +62,7 @@ router.delete(
     if (!deletedHabitCheck) {
       return send(res).notFound();
     }
-    send(res).ok({ message: `Habit check with ID ${id} deleted successfully` });
+    send(res).ok({ message: 'Habit check with ID ${id} deleted successfully' });
   })
 );
 

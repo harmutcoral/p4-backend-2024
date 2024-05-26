@@ -12,7 +12,7 @@ const taskBodySchema = z.object({
   content: z.string().min(10).max(1000),
   status: z.string().optional(),
   userId: z.coerce.number(),
-}).strict();
+})
 
 //Get all tasks
 router.get(
@@ -57,10 +57,9 @@ router.delete(
     if (!deletedTask) {
       return send(res).notFound();
     }
-    send(res).ok({ message: `Task with ID ${taskId} deleted successfully` });
+    send(res).ok({ message: 'Task with ID ${taskId} deleted successfully' });
   })
 );
-
 
 router.use(defaultErrorHandler);
 
