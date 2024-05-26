@@ -11,9 +11,9 @@ const router = Router();
 const idParamsSchema = z.object({ id: z.coerce.number() });
 
 const habitCheckBodySchema = z.object({
-  // habit: z.string().min(3).max(50),
+  habit: z.string().min(3).max(50),
   status: z.string().max(50),
-  // userId: z.coerce.number(),
+  userId: z.coerce.number(),
 });
 
 // Get all habit checks
