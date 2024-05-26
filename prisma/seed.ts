@@ -19,9 +19,24 @@ async function main() {
           },
         ],
       },
+      habitChecks: {
+        create: [
+          {
+            habit: 'Meditación diaria',
+            checkDate: new Date(),
+            status: 'checked',
+          },
+          {
+            habit: 'Lectura diaria',
+            checkDate: new Date(),
+            status: 'unchecked',
+          },
+        ],
+      },
     },
     include: {
       tasks: true,
+      habitChecks: true,
     },
   });
 
@@ -40,9 +55,24 @@ async function main() {
           },
         ],
       },
+      habitChecks: {
+        create: [
+          {
+            habit: 'Hacer la cama',
+            checkDate: new Date(),
+            status: 'checked',
+          },
+          {
+            habit: 'Estiramientos',
+            checkDate: new Date(),
+            status: 'unchecked',
+          },
+        ],
+      },
     },
     include: {
       tasks: true,
+      habitChecks: true,
     },
   });
 
