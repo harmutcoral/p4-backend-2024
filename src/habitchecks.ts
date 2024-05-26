@@ -61,9 +61,12 @@ router.delete(
   "/:id",
   catchErrors(async (req, res) => {
     const { id } = idParamsSchema.parse(req.params);
+    const deletedHabitCheck = await db.habitCheck.delete({ where: { id } });
 
-    await db.habitCheck.delete({ where: { id } });
-    send(res).ok({});
+    if (!deletedHabitCheck) {
+      return send(res).notFound();
+    }
+    send(res).ok({ message: `Habit check with ID ${id} deleted successfully` });
   })
 );
 
