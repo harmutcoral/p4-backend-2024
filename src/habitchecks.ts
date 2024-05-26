@@ -1,84 +1,98 @@
 import { Router } from "express";
 import { db } from "./db";
+import { send } from "./response";
+import { catchErrors } from "./errors";
+import { number, z } from "zod";
+import { ZodError } from "zod";
+import { zodErrorMessage } from "./errors";
 
 const router = Router();
 
-/*
-GET     /habitchecks/             Get all habit checks
-GET     /habitchecks/:id          Get one habit check by ID
-POST    /habitchecks/             Add a new habit check
-DELETE  /habitchecks/:id          Delete a habit check by ID
-*/
+const idParamsSchema = z.object({ id: z.coerce.number() });
+
+const habitCheckBodySchema = z.object({
+  // habit: z.string().min(3).max(50),
+  status: z.string().max(50),
+  // userId: z.coerce.number(),
+});
 
 // Get all habit checks
-router.get("/", async (req, res) => {
-  try {
+router.get(
+  "/",
+  catchErrors(async (req, res) => {
     const habitChecks = await db.habitCheck.findMany({});
-    res.status(200).json(habitChecks);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Internal error" });
-  }
-});
+    send(res).ok(habitChecks);
+  })
+);
 
 // Get habit check by ID
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const habitCheck = await db.habitCheck.findUniqueOrThrow({
-      where: { id: Number(id) },
-    });
-    res.status(200).json(habitCheck);
-  } catch (e: any) {
-    if (e.name === "NotFoundError") {
-      return res.status(404).json({ message: "Habit check not found." });
+router.get(
+  "/:id",
+  catchErrors(async (req, res) => {
+    const { id } = idParamsSchema.parse(req.params);
+
+    try {
+      const habitCheck = await db.habitCheck.findUniqueOrThrow({
+        where: { id },
+      });
+
+      // If habit check is null, it means it was not found
+      if (!habitCheck) {
+        return send(res).notFound();
+      }
+
+      // Respond with the habit check if found
+      send(res).ok(habitCheck);
+    } catch (error: unknown) {
+      if (error instanceof ZodError) {
+        return send(res).badRequest(zodErrorMessage(error));
+      }
+      console.error(error);
+      send(res).internalError("Internal error");
     }
-    res.status(500).json({ error: "Internal error" });
-  }
-});
+  })
+);
+
 
 // Update habit check status
-router.put("/:id", async (req, res) => {
+router.put(
+  "/:id",
+  catchErrors(async (req, res) => {
+    const { id } = idParamsSchema.parse(req.params);
+    const { status } = habitCheckBodySchema.parse(req.body);
+
     try {
-      const { id } = req.params;
-      const { status } = req.body;
       const updatedHabitCheck = await db.habitCheck.update({
-        where: { id: Number(id) },
+        where: { id },
         data: { status },
       });
-      res.status(200).json(updatedHabitCheck);
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({ error: "Couldn't update habit check status." });
-    }
-  });  
 
-// Add a new habit check
-router.post("/", async (req, res) => {
-  try {
-    const { habit, checkDate, status, userId } = req.body;
-    const habitCheck = await db.habitCheck.create({
-      data: { habit, checkDate, status, userId },
-    });
-    res.status(201).json(habitCheck);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Couldn't create habit check." });
-  }
-});
+      send(res).ok(updatedHabitCheck); 
+    } catch (error: unknown) {
+      if (error instanceof ZodError) {
+        return send(res).badRequest(zodErrorMessage(error));
+      }
+      console.error(error);
+      send(res).internalError("Internal error");
+    }
+  })
+);
+
 
 // Delete a habit check by ID
-router.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    await db.habitCheck.delete({
-      where: { id: Number(id) },
-    });
-    res.status(204).end();
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Couldn't delete habit check." });
-  }
-});
+router.delete(
+  "/:id",
+  catchErrors(async (req, res) => {
+    const { id } = idParamsSchema.parse(req.params);
+
+    try {
+      await db.habitCheck.delete({ where: { id } });
+      send(res).ok({});
+    } catch (error: unknown) {
+      console.error(error);
+      send(res).internalError("Internal error");
+    }
+  })
+);
 
 export default router;
