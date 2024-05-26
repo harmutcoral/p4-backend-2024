@@ -29,7 +29,7 @@ router.get("/:id", async (req, res) => {
     res.status(200).json(task);
   } catch (e: any) {
     if (e.name === "NotFoundError") {
-      return res.status(404).json({ message: "Task not found. :(" });
+      return res.status(404).json({ message: "Task not found." });
     }
     res.status(500).json({ error: "Internal error" });
   }
