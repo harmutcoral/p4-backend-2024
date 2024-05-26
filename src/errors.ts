@@ -32,7 +32,7 @@ export const defaultErrorHandler: ErrorRequestHandler = (err, req, res, next) =>
 
     case "ZodError":
       return send(res).badRequest(zodErrorMessage(err));
-
+      
     default:
       return send(res).internalError(`Internal error.`);
   }

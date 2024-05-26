@@ -12,7 +12,7 @@ const taskBodySchema = z.object({
   content: z.string().min(10).max(1000),
   status: z.string().optional(),
   userId: z.coerce.number(),
-});
+}).strict();
 
 //Get all tasks
 router.get(
@@ -47,14 +47,20 @@ router.post(
   })
 );
 
-//Delete task
+// Delete task
 router.delete(
   "/:id",
   catchErrors(async (req, res) => {
     const taskId = parseInt(req.params.id);
-    await db.task.delete({ where: { id: taskId } });
+    const deletedTask = await db.task.delete({ where: { id: taskId } });
+
+    if (!deletedTask) {
+      return send(res).notFound();
+    }
+    send(res).ok({ message: `Task with ID ${taskId} deleted successfully` });
   })
 );
+
 
 router.use(defaultErrorHandler);
 
