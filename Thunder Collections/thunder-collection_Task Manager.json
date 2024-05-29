@@ -1,0 +1,69 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Task Manager",
+    "collectionId": "f3b6894c-34e4-446a-9fdc-54968e44fa26",
+    "dateExported": "2024-05-29T11:24:12.248Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "e3ef82a2-0739-4512-9d20-46e3569bfd86",
+            "colId": "f3b6894c-34e4-446a-9fdc-54968e44fa26",
+            "containerId": "",
+            "name": "GET Tasks",
+            "url": "http://localhost:7777/tasklists",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-05-26T12:59:18.651Z",
+            "modified": "2024-05-26T16:16:47.202Z",
+            "headers": []
+        },
+        {
+            "_id": "0c19eac5-7166-42bf-a30f-306e6b35c485",
+            "colId": "f3b6894c-34e4-446a-9fdc-54968e44fa26",
+            "containerId": "",
+            "name": "Get Task by ID",
+            "url": "http://localhost:7777/tasklists/15",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-05-26T13:15:52.604Z",
+            "modified": "2024-05-26T20:17:46.436Z",
+            "headers": []
+        },
+        {
+            "_id": "0848ac84-b039-449c-a815-7b84813fa51d",
+            "colId": "f3b6894c-34e4-446a-9fdc-54968e44fa26",
+            "containerId": "",
+            "name": "Create Task",
+            "url": "http://localhost:7777/tasklists",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2024-05-26T13:18:54.989Z",
+            "modified": "2024-05-26T20:18:43.158Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"title\": \"Create backend program for práctica 4\",\n  \"content\": \"Create backend program using thunder client, express and prisma\",\n  \"status\": \"done\",\n  \"userId\": 1\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "13264977-236b-44b3-9a95-5aabcd3da3bc",
+            "colId": "f3b6894c-34e4-446a-9fdc-54968e44fa26",
+            "containerId": "",
+            "name": "Delete Task",
+            "url": "http://localhost:7777/tasklists/9",
+            "method": "DELETE",
+            "sortNum": 100000,
+            "created": "2024-05-26T16:24:44.078Z",
+            "modified": "2024-05-26T20:23:56.197Z",
+            "headers": []
+        }
+    ],
+    "settings": {
+        "options": {
+            "baseUrl": "http://localhost:7777"
+        }
+    },
+    "ref": "d7mvfg48i1Dz2vM-kOh4t-hCcV8_pRCHTBpoZP1p12J81kZqhlP_pz58E3cGx8MERBgWzZRmbJWcsTL1xegHNA"
+}

@@ -1,0 +1,64 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Habits Manager",
+    "collectionId": "e3affc97-7a90-4f59-b5e6-8587013dffd8",
+    "dateExported": "2024-05-29T11:24:29.090Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "054a1466-2e81-4849-bec2-9d0d935203df",
+            "colId": "e3affc97-7a90-4f59-b5e6-8587013dffd8",
+            "containerId": "",
+            "name": "GET Habit Checks",
+            "url": "http://localhost:7777/habitchecks",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-05-26T17:16:50.743Z",
+            "modified": "2024-05-26T17:17:38.522Z",
+            "headers": []
+        },
+        {
+            "_id": "a8f5eada-3c1e-4a86-9444-3b11ea6043b9",
+            "colId": "e3affc97-7a90-4f59-b5e6-8587013dffd8",
+            "containerId": "",
+            "name": "GET Habit Checks by ID",
+            "url": "http://localhost:7777/habitchecks/5",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-05-26T17:20:44.435Z",
+            "modified": "2024-05-26T20:26:40.880Z",
+            "headers": []
+        },
+        {
+            "_id": "c3a1b511-5c9f-4126-8825-fe95390a4c90",
+            "colId": "e3affc97-7a90-4f59-b5e6-8587013dffd8",
+            "containerId": "",
+            "name": "Update Habit Check Status",
+            "url": "http://localhost:7777/habitchecks/6",
+            "method": "PUT",
+            "sortNum": 60000,
+            "created": "2024-05-26T17:22:05.818Z",
+            "modified": "2024-05-26T20:31:29.142Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"status\": \"checked\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "15277727-0fb1-41c4-9bf3-6a93db672481",
+            "colId": "e3affc97-7a90-4f59-b5e6-8587013dffd8",
+            "containerId": "",
+            "name": "Delete Habit Check",
+            "url": "http://localhost:7777/habitchecks/4",
+            "method": "DELETE",
+            "sortNum": 80000,
+            "created": "2024-05-26T17:23:10.561Z",
+            "modified": "2024-05-26T20:26:12.385Z",
+            "headers": []
+        }
+    ],
+    "ref": "Env39fP3eOnfYWz8JoFVBGJYhlto0uNkdTceuSw1o8ZTGVeRrDOKFEKtCrMsH0Tk30fbKrXDgHhGgKouaIfrJg"
+}
